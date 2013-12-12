@@ -68,4 +68,6 @@ Usage
 	  .boolean(true)
 	  .seperator()
 
-	  .endObject(); //{"Real name":"Thomas A. Anderson","Hacker name":"Neo","Entity":"The One","Height":185,"isCreatedByArchitect":true}
+	  .endObject(); 
+	  
+	  // {"Real name":"Thomas A. Anderson","Hacker name":"Neo","Entity":"The One","Height":185,"isCreatedByArchitect":true}
