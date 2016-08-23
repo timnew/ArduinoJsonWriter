@@ -14,14 +14,20 @@ void JsonWriter::ifSeparator(){
 }
 
 JsonWriter& JsonWriter::beginObject(){
-        ifSeparator();
+        if(!separatorAlreadyCalled){
+          ifSeparator();
+          separatorAlreadyCalled = true;
+        }
 	stream->print("{");
         firstElement = true;
 	return *this;
 }
 
 JsonWriter& JsonWriter::beginObject(String name){
-        ifSeparator();
+      if(!separatorAlreadyCalled){
+          ifSeparator();
+          separatorAlreadyCalled = true;
+        }
         memberName(name);
 	stream->print("{");
         firstElement = true;
@@ -30,83 +36,114 @@ JsonWriter& JsonWriter::beginObject(String name){
 
 JsonWriter& JsonWriter::property(String name, char* value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         string(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, String value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         string(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, int value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, unsigned int value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, long value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, unsigned long value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, short value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, unsigned short value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, byte value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, float value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::property(String name, double value){
         ifSeparator();
+        separatorAlreadyCalled = true;
         memberName(name);
         number(value);
+        separatorAlreadyCalled = false;
+	return *this;
+}
+
+JsonWriter& JsonWriter::property(String name, bool value){
+        ifSeparator();
+        separatorAlreadyCalled = true;
+        memberName(name);
+        boolean(value);
+        separatorAlreadyCalled = false;
 	return *this;
 }
 
 JsonWriter& JsonWriter::memberName(String name){
-	string(name);	
+	string(name);
 	stream->print(':');
 	return *this;
 }
@@ -127,7 +164,9 @@ JsonWriter& JsonWriter::endObject(){
 }
 
 JsonWriter& JsonWriter::beginArray(){
-        ifSeparator();
+        if(!separatorAlreadyCalled){
+          ifSeparator();
+        }
         firstElement = true;
 	stream->print("[");
 	return *this;
@@ -135,9 +174,13 @@ JsonWriter& JsonWriter::beginArray(){
 
 JsonWriter& JsonWriter::beginArray(String name){
 
-        ifSeparator();
+        if(!separatorAlreadyCalled){
+          ifSeparator();
+          separatorAlreadyCalled = true;
+        }
         firstElement = true;
         memberName(name);
+        separatorAlreadyCalled = false;
 	stream->print("[");
 	return *this;
 }
@@ -149,65 +192,76 @@ JsonWriter& JsonWriter::endArray(){
 }
 
 JsonWriter& JsonWriter::string(char* text){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print("\"");
 	stream->print(text);
 	stream->print("\"");
 	return *this;
 }
 JsonWriter& JsonWriter::string(String text){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print("\"");
 	stream->print(text);
 	stream->print("\"");
 	return *this;
 }
-	
+
 JsonWriter& JsonWriter::number(int number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(unsigned int number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(long number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(unsigned long number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(short number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(unsigned short number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 JsonWriter& JsonWriter::number(byte number){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(number, DEC);
 	return *this;
 }
 
 JsonWriter& JsonWriter::number(float number){
-        ifSeparator();
- stream->print(number);
- return *this;
+        if(!separatorAlreadyCalled)
+          ifSeparator();
+        stream->print(number);
+        return *this;
 }
 JsonWriter& JsonWriter::number(double number){
-        ifSeparator();
- stream->print(number);
- return *this;
+        if(!separatorAlreadyCalled)
+          ifSeparator();
+        stream->print(number);
+        return *this;
 }
 
 JsonWriter& JsonWriter::null(){
@@ -217,7 +271,8 @@ JsonWriter& JsonWriter::null(){
 }
 
 JsonWriter& JsonWriter::boolean(bool value){
-        ifSeparator();
+        if(!separatorAlreadyCalled)
+          ifSeparator();
 	stream->print(value ? "true" : "false");
 	return *this;
 }
