@@ -27,47 +27,78 @@ Usage
 
 	writer.string("Json String");           // "Json String"
 	writer.string("0x" + String(255,HEX));  // "0xFF"
-
 	writer.number(23);						 // 23
-
 	writer.null();							 // null
-	
-	writer.boolean(true);					 // true	writer.boolean(false);					 // false
+	writer.boolean(true);					 // true	
+	writer.boolean(false);					 // false
 
 ### Emit Array
 	writer
 	  .beginArray()
 	  .string("alpha")
-	  .separator()
 	  .string("beta")
-	  .separator()
+	  .null()
 	  .string("gamma")
-	  .endArray(); 					        // ["aplha","beta","gamma"]
+	  .number(123)
+	  .endArray(); 					        
+	  // ["aplha","beta",null,"gamma",123]
 
 ### Emit Object
 	writer
 	  .beginObject()
-
-	  .memberName("	Real name")
-	  .string("Thomas A. Anderson")
-	  .separator()
-
-	  .memberName("Hacker name"))
-	  .string("Neo")
-	  .separator()
-
-	  .memberName("Entity")
-	  .string("The One")
-	  .separator()
-
-	  .memberName("Height")
-	  .number(185)
-	  .seperator()
-	  
-	  .memberName("isCreatedByArchitect")
-	  .boolean(true)
-	  .seperator()
-
+            .property("Real name","Thomas A. Anderson")
+            .property("Hacker name","Neo")
+            .property("Entity","The One")
+            .property("Height",185)
+            .property("isCreatedByArchitect",true)
 	  .endObject(); 
 	  
 	  // {"Real name":"Thomas A. Anderson","Hacker name":"Neo","Entity":"The One","Height":185,"isCreatedByArchitect":true}
+	  
+### Array of objects
+	writer
+	  .beginArray()
+            .beginObject()
+                .property("name", "alpha")
+            .endObject()
+            .beginObject()
+                .property("name", "beta")
+                .property("anotherProperty", 12.67)
+            .endObject()
+            .beginObject()
+                .property("name", "gamma")
+            .endObject()
+	  .endArray(); 					        
+	  // [{"name":"alpha"},{"name":"beta","anotherProperty":12.67},{"name":"gamma"}]
+	  
+### Nested Objects and arrays
+	writer
+	  .beginObject()
+	    .property("id", 7)
+	    .beginObject("name")
+                .property("firstName","James")
+                .property("lastName","Bond")
+            .endObject()
+            .beginArray("languages")
+                .string("English")
+                .string("Russian")
+            .endArray()
+            .beginArray("gadgets")
+                .beginObject()
+                    .property("name", "Laser watch")
+                    .property("returned", false)
+                .endObject()
+                .beginObject()
+                    .property("name", "Walther PP")
+                    .property("returned", false)
+                    .beginArray("calibers")
+                        .number(32)
+                        .number(380)
+                        .number(22)
+                    .endArray()
+                .endObject()
+            .endArray()
+	  .endObject(); 
+	  
+	  // {"id":7,"name":{"firstName":"James","lastName":"Bond"},"languages":["English","Russian"],"gadgets":[{"name":"Laser watch","returned":0},{"name":"Walther PP","returned":0,"calibers":[32,380,22]}]}
+	  
