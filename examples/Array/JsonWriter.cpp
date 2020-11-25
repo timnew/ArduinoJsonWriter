@@ -15,9 +15,16 @@ void JsonWriter::ifSeparator(){
 
 JsonWriter& JsonWriter::beginDocument(){
         firstElement = true;
+        countIndent=0;
         return *this;
 }
 
+JsonWriter& JsonWriter::beginDocument(bool value){
+        firstElement = true;
+        prettyPrint = value;
+        countIndent=0;
+        return *this;
+}
 JsonWriter& JsonWriter::endDocument(){
         return *this;
 }
@@ -28,6 +35,10 @@ JsonWriter& JsonWriter::beginObject(){
           separatorAlreadyCalled = true;
         }
 	stream->print("{");
+        if(prettyPrint) {
+                stream->print("\n");
+                countIndent++;
+        }
         firstElement = true;
 	return *this;
 }
@@ -39,6 +50,10 @@ JsonWriter& JsonWriter::beginObject(String name){
         }
         memberName(name);
 	stream->print("{");
+        if(prettyPrint) {
+                stream->print("\n");
+                countIndent++;
+        }
         firstElement = true;
 	return *this;
 }
@@ -157,17 +172,22 @@ JsonWriter& JsonWriter::memberName(String name){
 	return *this;
 }
 JsonWriter& JsonWriter::memberName(char* name){
-	string(name);
+        string(name);
 	stream->print(':');
 	return *this;
 }
 
 JsonWriter& JsonWriter::separator(){
 	stream->print(",");
+        if(prettyPrint) stream->print("\n");
 	return *this;
 
 }
 JsonWriter& JsonWriter::endObject(){
+        if(prettyPrint) {
+                stream->print("\n");
+                countIndent--;
+        }
 	stream->print("}");
 	return *this;
 }
@@ -178,6 +198,10 @@ JsonWriter& JsonWriter::beginArray(){
         }
         firstElement = true;
 	stream->print("[");
+        if(prettyPrint) {
+                stream->print("\n");                
+                countIndent--;
+        }
 	return *this;
 }
 
@@ -191,11 +215,19 @@ JsonWriter& JsonWriter::beginArray(String name){
         memberName(name);
         separatorAlreadyCalled = false;
 	stream->print("[");
+        if(prettyPrint) {
+                stream->print("\n");
+                countIndent++; 
+        }
 	return *this;
 }
 
 
 JsonWriter& JsonWriter::endArray(){
+        if(prettyPrint){
+                stream->print("\n");
+                countIndent--; 
+        }
 	stream->print("]");
 	return *this;
 }

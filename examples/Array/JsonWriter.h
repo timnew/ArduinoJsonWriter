@@ -14,11 +14,14 @@ private:
            arrays of base types (array of integers for example)*/
         bool separatorAlreadyCalled = false;
         void ifSeparator();
+		bool prettyPrint = true;
+		int countIndent = 0;
 
 public:
 	JsonWriter(Stream* stream);
 
 	JsonWriter& beginDocument();
+	JsonWriter& beginDocument(bool value);
 	JsonWriter& endDocument();
 
 	JsonWriter& beginObject();
