@@ -14,6 +14,7 @@ private:
            arrays of base types (array of integers for example)*/
         bool separatorAlreadyCalled = false;
         void ifSeparator();
+		void printIndent();
 		bool prettyPrint = true;
 		int countIndent = 0;
 

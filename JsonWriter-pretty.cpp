@@ -13,6 +13,12 @@ void JsonWriter::ifSeparator(){
         }
 }
 
+void JsonWriter::printIndent(){
+        for (i=countIndent; i>0; i--){
+               stream->print(" "); 
+        }
+}
+
 JsonWriter& JsonWriter::beginDocument(){
         firstElement = true;
         countIndent=0;
