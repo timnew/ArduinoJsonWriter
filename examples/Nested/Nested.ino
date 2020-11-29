@@ -7,7 +7,7 @@ void setup() {
   Serial.begin(115200);
   serialJsonWriter
 
-  .beginDocument()
+  .beginDocument(true, 2)
     .beginObject()
     .property("id", 7)
     .beginObject("name")

@@ -14,11 +14,19 @@ private:
            arrays of base types (array of integers for example)*/
         bool separatorAlreadyCalled = false;
         void ifSeparator();
+		
+		bool prettyPrint = true;
+		void printPretty();
+		void printPrettySpace();
+		int countIndent = 0;  //level of indentation
+		int indentFactor = 2; //default 2 spaces per indent
 
 public:
 	JsonWriter(Stream* stream);
 
 	JsonWriter& beginDocument();
+	JsonWriter& beginDocument(bool value);
+	JsonWriter& beginDocument(bool value, int factor);
 	JsonWriter& endDocument();
 
 	JsonWriter& beginObject();

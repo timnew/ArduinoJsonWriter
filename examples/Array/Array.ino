@@ -17,7 +17,7 @@ void loop() {
     Serial.println();
 
     serialJsonWriter
-    .beginDocument(true)
+    .beginDocument(true, 3)
         .beginArray()
             .beginObject()
                 .property("name", "alpha")
