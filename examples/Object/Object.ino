@@ -1,5 +1,6 @@
 #include "JsonWriter.h"
 
+JsonWriter serialJsonWriter(&Serial);
 
 void setup() {
 
@@ -7,14 +8,15 @@ void setup() {
 
 
 }
-int i=0;
+int i = 0;
 void loop() {
+  delay(1000);
+  i++;
+  Serial.println(i);
 
-  Serial.println(i++);
-  
-  JsonWriter serialJsonWriter(&Serial);
+
   serialJsonWriter
-   .beginDocument()
+  .beginDocument()
       .beginObject()
           .property("Real name","Thomas A. Anderson")
           .property("Hacker name","Neo")
@@ -23,6 +25,4 @@ void loop() {
           .property("isCreatedByArchitect",true)
       .endObject()
     .endDocument(); 
-  Serial.println();
-  delay(1000);
 }

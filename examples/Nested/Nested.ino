@@ -38,7 +38,7 @@ void loop() {
                     .beginArray("calibers")
                         .number(32)
                         .number(380)
-                        .number(22)
+                        .number(i)
                     .endArray()
                 .endObject()
             .endArray()
