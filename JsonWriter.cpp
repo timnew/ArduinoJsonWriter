@@ -4,6 +4,20 @@ JsonWriter::JsonWriter(Stream* stream)
 	:stream(stream){
 }
 
+// This helpt printing it pretty readable
+void JsonWriter::printPretty(){
+        if(prettyPrint) {
+                stream->print("\n");
+                for (int i = countIndent * indentFactor; i>0; i--){
+                        stream->print(" ");
+                }
+        }
+}     
+
+void JsonWriter::printPrettySpace(){          
+        if (prettyPrint) stream->print(" ");
+}
+
 // This function checks if a separator should be printed
 void JsonWriter::ifSeparator(){
         if(firstElement){
@@ -13,12 +27,39 @@ void JsonWriter::ifSeparator(){
         }
 }
 
+JsonWriter& JsonWriter::beginDocument(){
+        firstElement = true;
+        countIndent=0;
+        return *this;
+}
+
+JsonWriter& JsonWriter::beginDocument(bool value){
+        firstElement = true;
+        prettyPrint = value;
+        countIndent  =0;
+        return *this;
+}
+
+JsonWriter& JsonWriter::beginDocument(bool value, int factor){
+        firstElement = true;
+        prettyPrint = value;
+        countIndent = 0;
+        indentFactor = factor;
+        return *this;  
+}
+
+JsonWriter& JsonWriter::endDocument(){
+        return *this;
+}
+
 JsonWriter& JsonWriter::beginObject(){
         if(!separatorAlreadyCalled){
           ifSeparator();
           separatorAlreadyCalled = true;
         }
 	stream->print("{");
+        countIndent++;
+        printPretty();
         firstElement = true;
 	return *this;
 }
@@ -30,6 +71,8 @@ JsonWriter& JsonWriter::beginObject(String name){
         }
         memberName(name);
 	stream->print("{");
+        countIndent++;
+        printPretty();
         firstElement = true;
 	return *this;
 }
@@ -144,21 +187,25 @@ JsonWriter& JsonWriter::property(String name, bool value){
 
 JsonWriter& JsonWriter::memberName(String name){
 	string(name);
-	stream->print(':');
+        stream->print(":");
+        printPrettySpace();
 	return *this;
 }
 JsonWriter& JsonWriter::memberName(char* name){
-	string(name);
-	stream->print(':');
-	return *this;
+        string(name);
+        stream->print(":");
+        printPrettySpace();
+        return *this;
 }
 
 JsonWriter& JsonWriter::separator(){
 	stream->print(",");
+        printPretty();
 	return *this;
-
 }
 JsonWriter& JsonWriter::endObject(){
+        countIndent--;
+        printPretty();
 	stream->print("}");
 	return *this;
 }
@@ -169,6 +216,8 @@ JsonWriter& JsonWriter::beginArray(){
         }
         firstElement = true;
 	stream->print("[");
+        countIndent++;
+        printPretty();
 	return *this;
 }
 
@@ -182,11 +231,15 @@ JsonWriter& JsonWriter::beginArray(String name){
         memberName(name);
         separatorAlreadyCalled = false;
 	stream->print("[");
+        countIndent++;
+        printPretty();
 	return *this;
 }
 
 
 JsonWriter& JsonWriter::endArray(){
+        countIndent--;
+        printPretty();
 	stream->print("]");
 	return *this;
 }

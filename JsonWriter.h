@@ -14,23 +14,34 @@ private:
            arrays of base types (array of integers for example)*/
         bool separatorAlreadyCalled = false;
         void ifSeparator();
+		
+		bool prettyPrint = true;
+		void printPretty();
+		void printPrettySpace();
+		int countIndent = 0;  //level of indentation
+		int indentFactor = 2; //default 2 spaces per indent
 
 public:
 	JsonWriter(Stream* stream);
 
+	JsonWriter& beginDocument();
+	JsonWriter& beginDocument(bool value);
+	JsonWriter& beginDocument(bool value, int factor);
+	JsonWriter& endDocument();
+
 	JsonWriter& beginObject();
-  JsonWriter& beginObject(String name);
+	JsonWriter& beginObject(String name);
 	JsonWriter& memberName(char* name);
 	JsonWriter& memberName(String name);
 	JsonWriter& separator();
 	JsonWriter& endObject();
 
 	JsonWriter& beginArray();
-  JsonWriter& beginArray(String name);
+  	JsonWriter& beginArray(String name);
 	JsonWriter& endArray();
 
 	JsonWriter& property(String name, char* value);
-  JsonWriter& property(String name, String value);
+  	JsonWriter& property(String name, String value);
 
 	JsonWriter& property(String name, int value);
 	JsonWriter& property(String name, unsigned int value);
@@ -39,11 +50,9 @@ public:
 	JsonWriter& property(String name, short value);
 	JsonWriter& property(String name, unsigned short value);
 	JsonWriter& property(String name, byte value);
-  JsonWriter& property(String name, float value);
-  JsonWriter& property(String name, double value);
-  JsonWriter& property(String name, bool value);
-
-
+	JsonWriter& property(String name, float value);
+	JsonWriter& property(String name, double value);
+	JsonWriter& property(String name, bool value);
 
 	JsonWriter& string(char* text);
 	JsonWriter& string(String text);
@@ -62,7 +71,7 @@ public:
 
 	JsonWriter& boolean(bool value);
 
-        int operator[](char *);
+	int operator[](char *);
 };
 
 #endif __JSON_WRITER_H__
